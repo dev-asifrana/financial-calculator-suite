@@ -1,6 +1,6 @@
 # Financial Calculator Suite
 
-A professional, mobile-friendly web application that provides three essential financial calculators to help users make informed financial decisions. Built with Streamlit and designed with a clean, modern interface.
+A professional, mobile-friendly web application that provides four essential financial calculators to help users make informed financial decisions. Built with Streamlit and designed with a clean, modern interface.
 
 ## 🚀 Features
 
@@ -41,6 +41,16 @@ Plan your path to financial freedom by calculating when you'll be debt-free and 
 - Total interest savings calculation
 - Monthly payment breakdown
 - Interactive debt reduction chart
+
+### 4. Biweekly Payment Calculator
+Convert monthly or annual payments into biweekly amounts that align with your pay schedule.
+
+**Features:**
+- Monthly to biweekly conversion
+- Annual to biweekly conversion
+- 26 pay periods per year calculation
+- Automated transfer planning
+- Payment automation guidance
 
 ## 🛠️ Installation
 

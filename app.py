@@ -9,7 +9,7 @@ import os
 
 # Page Configuration
 st.set_page_config(
-    page_title="Financial Calculator Suite",
+    page_title="The Financial Evolution Toolkit",
     page_icon="💰",
     layout="wide",
     initial_sidebar_state="expanded"
@@ -21,10 +21,21 @@ st.markdown("""
     /* Import Google Fonts */
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
     
+    /* Theme Variables */
+    :root {
+        --primary-color: #FF6600;
+        --primary-color-light: #fff0e6;
+        --primary-color-dark: #cc5200;
+        --background-color: #ffffff;
+        --secondary-background: #f5f8fa;
+        --text-color: #181c32;
+        --header-color: #666666;
+    }
+    
     /* Global Styles */
     .main {
         padding: 0;
-        background-color: #f8fafc;
+        background-color: var(--secondary-background, #f5f8fa);
         min-height: 100vh;
         font-family: 'Inter', sans-serif;
     }
@@ -37,7 +48,7 @@ st.markdown("""
     
     /* Override Streamlit default styles */
     .stApp {
-        background-color: #f8fafc;
+        background-color: var(--secondary-background, #f5f8fa);
         font-family: 'Inter', sans-serif;
     }
     
@@ -106,34 +117,75 @@ st.markdown("""
     }
     
     section[data-testid="stSidebar"] .stRadio input:checked + label {
-        background: #3182ce !important;
-        border-color: #3182ce !important;
+        background: var(--primary-color, #FF6600) !important;
+        border-color: var(--primary-color, #FF6600) !important;
         color: #ffffff !important;
     }
     
-    /* Primary button styling */
+    /* Enhanced Primary button styling - Sidebar */
     section[data-testid="stSidebar"] button[data-testid="baseButton-primary"] {
-        background: linear-gradient(135deg, #3182ce 0%, #2c5aa0 100%) !important;
+        background: linear-gradient(135deg, #FF6600 0%, #FF8533 25%, #FF6600 50%, #E55A00 75%, #CC5200 100%) !important;
+        background-size: 300% 300% !important;
         color: #ffffff !important;
         border: none !important;
-        border-radius: 12px !important;
-        padding: 1rem 1.5rem !important;
-        font-weight: 600 !important;
-        font-size: 0.9rem !important;
-        transition: all 0.3s ease !important;
-        box-shadow: 0 4px 12px rgba(49, 130, 206, 0.3) !important;
+        border-radius: 16px !important;
+        padding: 1.2rem 2rem !important;
+        font-weight: 700 !important;
+        font-size: 1rem !important;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        box-shadow: 
+            0 8px 25px rgba(255, 102, 0, 0.4),
+            0 4px 12px rgba(255, 102, 0, 0.3),
+            inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
         margin-top: 1rem !important;
+        position: relative !important;
+        overflow: hidden !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.5px !important;
+        animation: buttonGradientShift 6s ease-in-out infinite !important;
+    }
+    
+    section[data-testid="stSidebar"] button[data-testid="baseButton-primary"]:before {
+        content: '' !important;
+        position: absolute !important;
+        top: 0 !important;
+        left: -100% !important;
+        width: 100% !important;
+        height: 100% !important;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent) !important;
+        transition: left 0.6s ease !important;
     }
     
     section[data-testid="stSidebar"] button[data-testid="baseButton-primary"]:hover {
-        background: linear-gradient(135deg, #2c5aa0 0%, #2a4a7c 100%) !important;
-        transform: translateY(-2px) !important;
-        box-shadow: 0 8px 20px rgba(49, 130, 206, 0.5) !important;
+        background-position: 100% 50% !important;
+        transform: translateY(-4px) scale(1.02) !important;
+        box-shadow: 
+            0 15px 40px rgba(255, 102, 0, 0.6),
+            0 8px 25px rgba(255, 102, 0, 0.4),
+            0 0 0 1px rgba(255, 255, 255, 0.1) !important;
+        animation: buttonPulse 1.5s ease-in-out infinite !important;
+    }
+    
+    section[data-testid="stSidebar"] button[data-testid="baseButton-primary"]:hover:before {
+        left: 100% !important;
     }
     
     section[data-testid="stSidebar"] button[data-testid="baseButton-primary"]:active {
-        transform: translateY(0px) !important;
-        box-shadow: 0 2px 8px rgba(49, 130, 206, 0.3) !important;
+        transform: translateY(-1px) scale(0.98) !important;
+        box-shadow: 
+            0 5px 15px rgba(255, 102, 0, 0.4),
+            0 2px 8px rgba(255, 102, 0, 0.3) !important;
+        animation: none !important;
+    }
+    
+    @keyframes buttonGradientShift {
+        0%, 100% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+    }
+    
+    @keyframes buttonPulse {
+        0%, 100% { box-shadow: 0 15px 40px rgba(255, 102, 0, 0.6), 0 8px 25px rgba(255, 102, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.1); }
+        50% { box-shadow: 0 20px 50px rgba(255, 102, 0, 0.8), 0 12px 35px rgba(255, 102, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.2); }
     }
     
     /* Section headers in sidebar */
@@ -165,39 +217,73 @@ st.markdown("""
     
     /* Page header */
     .page-header {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        border-radius: 16px;
-        padding: 3rem 2rem;
-        margin-bottom: 2rem;
+        background: linear-gradient(135deg, #FF6600 0%, #FF8533 25%, #FF6600 50%, #E55A00 75%, #CC5200 100%);
+        background-size: 400% 400%;
+        animation: gradientShift 8s ease-in-out infinite;
+        border-radius: 20px;
+        padding: 4rem 2rem;
+        margin-bottom: 3rem;
         color: white;
         text-align: center;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        box-shadow: 
+            0 20px 60px rgba(255, 102, 0, 0.4),
+            0 10px 30px rgba(255, 102, 0, 0.3),
+            inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .page-header::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        animation: shimmer 3s ease-in-out infinite;
+    }
+    
+    @keyframes gradientShift {
+        0%, 100% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+    }
+    
+    @keyframes shimmer {
+        0% { left: -100%; }
+        100% { left: 100%; }
     }
     
     .page-header h1 {
-        font-size: 2.5rem;
-        font-weight: 700;
-        margin: 0 0 0.5rem 0;
+        font-size: 2.75rem;
+        font-weight: 800;
+        margin: 0 0 1rem 0;
         color: white !important;
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        position: relative;
+        z-index: 1;
     }
     
     .page-header p {
-        font-size: 1.125rem;
-        opacity: 0.9;
+        font-size: 1.25rem;
+        opacity: 0.95;
         margin: 0;
         color: white !important;
+        text-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+        position: relative;
+        z-index: 1;
     }
     
     /* Dashboard cards */
     .dashboard-cards {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-        gap: 2rem;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 1.5rem;
         margin-bottom: 2rem;
     }
     
     .calculator-card {
-        background: white;
+        background: var(--background-color, #ffffff);
         border-radius: 16px;
         padding: 2rem;
         box-shadow: 0 4px 12px rgba(0,0,0,0.08);
@@ -208,10 +294,43 @@ st.markdown("""
         color: inherit;
     }
     
+    .calculator-card {
+        transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .calculator-card:before {
+        content: '';
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        right: -2px;
+        bottom: -2px;
+        background: linear-gradient(135deg, #FF6600, #FF8533, #E55A00, #CC5200);
+        background-size: 400% 400%;
+        border-radius: 18px;
+        opacity: 0;
+        z-index: -1;
+        animation: cardGradientShift 10s ease-in-out infinite;
+        transition: opacity 0.5s ease;
+    }
+    
     .calculator-card:hover {
-        transform: translateY(-8px);
-        box-shadow: 0 16px 48px rgba(0,0,0,0.15);
-        border-color: #3182ce;
+        transform: translateY(-15px) scale(1.03);
+        box-shadow: 
+            0 30px 80px rgba(255, 102, 0, 0.3),
+            0 20px 40px rgba(0,0,0,0.15);
+        border-color: transparent;
+    }
+    
+    .calculator-card:hover:before {
+        opacity: 1;
+    }
+    
+    @keyframes cardGradientShift {
+        0%, 100% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
     }
     
     .card-icon {
@@ -226,14 +345,14 @@ st.markdown("""
         font-weight: bold;
     }
     
-    .card-icon.compound { background: #ebf8ff; color: #3182ce; }
+    .card-icon.compound { background: var(--primary-color-light, #fff0e6); color: var(--primary-color, #FF6600); }
     .card-icon.investment { background: #f0fff4; color: #38a169; }
     .card-icon.debt { background: #fed7d7; color: #e53e3e; }
     
     .card-title {
         font-size: 1.5rem;
         font-weight: 700;
-        color: #1a202c;
+        color: var(--header-color, #666666);
         margin-bottom: 0.75rem;
     }
     
@@ -268,7 +387,7 @@ st.markdown("""
     
     /* Content sections */
     .content-section {
-        background: white;
+        background: var(--background-color, #ffffff);
         border-radius: 16px;
         padding: 2rem;
         box-shadow: 0 4px 12px rgba(0,0,0,0.08);
@@ -279,11 +398,11 @@ st.markdown("""
     .section-title {
         font-size: 1.5rem;
         font-weight: 700;
-        color: #1a202c;
+        color: var(--header-color, #666666);
         margin-bottom: 1.5rem;
     }
     
-    /* Results styling */
+    /* Enhanced Results styling */
     .results-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -292,11 +411,29 @@ st.markdown("""
     }
     
     .result-card {
-        background: #f7fafc;
+        background: var(--secondary-background, #f5f8fa);
         border-radius: 12px;
         padding: 1.5rem;
         text-align: center;
         border: 1px solid #e2e8f0;
+        transition: all 0.3s ease;
+        animation: floatGentle 6s ease-in-out infinite;
+    }
+    
+    .result-card:nth-child(1) { animation-delay: 0s; }
+    .result-card:nth-child(2) { animation-delay: 1.5s; }
+    .result-card:nth-child(3) { animation-delay: 3s; }
+    .result-card:nth-child(4) { animation-delay: 4.5s; }
+    
+    .result-card:hover {
+        transform: translateY(-8px) scale(1.05);
+        box-shadow: 0 15px 35px rgba(255, 102, 0, 0.2);
+        border-color: var(--primary-color, #FF6600);
+    }
+    
+    @keyframes floatGentle {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-5px); }
     }
     
     .result-value {
@@ -307,7 +444,7 @@ st.markdown("""
     
     .result-value.positive { color: #38a169; }
     .result-value.negative { color: #e53e3e; }
-    .result-value.neutral { color: #3182ce; }
+    .result-value.neutral { color: var(--primary-color, #FF6600); }
     
     .result-label {
         font-size: 0.875rem;
@@ -317,7 +454,101 @@ st.markdown("""
         letter-spacing: 0.05em;
     }
     
+    /* Enhanced Main content button styling */
+    button[data-testid="baseButton-primary"] {
+        background: linear-gradient(135deg, #FF6600 0%, #FF8533 25%, #FF6600 50%, #E55A00 75%, #CC5200 100%) !important;
+        background-size: 300% 300% !important;
+        color: #ffffff !important;
+        border: none !important;
+        border-radius: 12px !important;
+        padding: 0.75rem 1.5rem !important;
+        font-weight: 700 !important;
+        font-size: 0.95rem !important;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        box-shadow: 
+            0 6px 20px rgba(255, 102, 0, 0.4),
+            0 3px 10px rgba(255, 102, 0, 0.3),
+            inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+        position: relative !important;
+        overflow: hidden !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.3px !important;
+        animation: buttonGradientShift 8s ease-in-out infinite !important;
+    }
+    
+    button[data-testid="baseButton-primary"]:before {
+        content: '' !important;
+        position: absolute !important;
+        top: 0 !important;
+        left: -100% !important;
+        width: 100% !important;
+        height: 100% !important;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent) !important;
+        transition: left 0.5s ease !important;
+    }
+    
+    button[data-testid="baseButton-primary"]:hover {
+        background-position: 100% 50% !important;
+        transform: translateY(-3px) scale(1.05) !important;
+        box-shadow: 
+            0 12px 30px rgba(255, 102, 0, 0.6),
+            0 6px 20px rgba(255, 102, 0, 0.4),
+            0 0 0 1px rgba(255, 255, 255, 0.1) !important;
+        animation: buttonGlow 2s ease-in-out infinite !important;
+    }
+    
+    button[data-testid="baseButton-primary"]:hover:before {
+        left: 100% !important;
+    }
+    
+    button[data-testid="baseButton-primary"]:active {
+        transform: translateY(-1px) scale(1.02) !important;
+        box-shadow: 
+            0 4px 15px rgba(255, 102, 0, 0.4),
+            0 2px 8px rgba(255, 102, 0, 0.3) !important;
+        animation: none !important;
+    }
+    
+    @keyframes buttonGlow {
+        0%, 100% { 
+            box-shadow: 
+                0 12px 30px rgba(255, 102, 0, 0.6),
+                0 6px 20px rgba(255, 102, 0, 0.4),
+                0 0 0 1px rgba(255, 255, 255, 0.1);
+        }
+        50% { 
+            box-shadow: 
+                0 16px 40px rgba(255, 102, 0, 0.8),
+                0 8px 25px rgba(255, 102, 0, 0.6),
+                0 0 0 1px rgba(255, 255, 255, 0.2);
+        }
+    }
+    
+    /* Card heading styling */
+    .stMarkdown h3 {
+        color: var(--header-color, #666666) !important;
+        font-weight: 700 !important;
+    }
+    
+    /* Info/Notes sections styling */
+    .stAlert > div {
+        background-color: var(--primary-color-light, #fff0e6) !important;
+        border-left: 4px solid var(--primary-color, #FF6600) !important;
+        color: #663300 !important;
+    }
+    
+    .stAlert p {
+        color: #663300 !important;
+    }
+    
     /* Responsive design */
+    @media (max-width: 1200px) {
+        .dashboard-cards {
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+    }
+    
     @media (max-width: 768px) {
         .main-content {
             padding: 1rem;
@@ -336,6 +567,13 @@ st.markdown("""
             font-size: 2rem;
         }
         
+        .results-grid {
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+        }
+    }
+    
+    @media (max-width: 480px) {
         .results-grid {
             grid-template-columns: 1fr;
             gap: 1rem;
@@ -361,11 +599,11 @@ def create_sidebar():
         # Try to display logo, fallback to text if not found
         try:
             if os.path.exists('assets/logo.png'):
-                st.image('assets/logo.png', width=200)
+                st.image('assets/logo.png', width=250)
             else:
-                st.markdown("### Financial Calculator Suite")
+                st.markdown("### The Financial Evolution Toolkit")
         except:
-            st.markdown("### Financial Calculator Suite")
+            st.markdown("### The Financial Evolution Toolkit")
         
         st.markdown('</div>', unsafe_allow_html=True)
         
@@ -378,11 +616,11 @@ def create_sidebar():
         
         # Get current page from session state for default selection
         current_page = st.session_state.get("selected_page", "Home")
-        page_options = ["Home", "Compound Interest", "Investment Fees", "Debt Free Date"]
+        page_options = ["Home", "Compound Interest", "Investment Fees", "Debt Free Date", "Biweekly Payment"]
         default_index = page_options.index(current_page) if current_page in page_options else 0
         
         page = st.radio(
-            "",
+            "Navigation Menu",
             page_options,
             index=default_index,
             label_visibility="collapsed"
@@ -396,9 +634,11 @@ def create_sidebar():
         """, unsafe_allow_html=True)
         
         st.markdown("""
-        **Professional Financial Tools**
+        **About the Financial Evolution Toolkit**
         
-        Calculate compound interest, compare investment fees, and plan your debt-free journey with our suite of financial calculators.
+        Professional-grade calculators designed to give you instant clarity around your money.
+        
+        Project your investment growth, see how much fees are costing you, and find your path to debt freedom — without spreadsheets or guesswork.
         """)
         
         # Add spacing to push copyright to bottom
@@ -418,101 +658,135 @@ def home_page():
     st.markdown("""
     <div class="main-content">
         <div class="page-header">
-            <h1>Financial Calculator Suite</h1>
-            <p>Professional tools to help you make informed financial decisions</p>
+            <h1>The Financial Evolution Toolkit</h1>
+            <p>Unlock financial clarity in minutes — not months.<br>These calculators give you the answers most people pay advisors to figure out.</p>
         </div>
     </div>
     """, unsafe_allow_html=True)
     
-    # Create three columns for the calculator cards
-    col1, col2, col3 = st.columns(3, gap="large")
+    # Create four columns for the calculator cards
+    col1, col2, col3, col4 = st.columns(4, gap="medium")
     
     with col1:
         # Compound Interest Calculator Card
-        with st.container():
-            st.markdown("""
-            <div style="
-                background: white;
-                border-radius: 16px;
-                padding: 2rem;
-                box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-                border: 1px solid #e2e8f0;
-                height: 300px;
-                cursor: pointer;
-                transition: all 0.3s ease;
-            ">
-                <h3 style="color: #1a202c; margin-bottom: 1rem;">Compound Interest Calculator</h3>
-                <p style="color: #718096; margin-bottom: 1.5rem;"><strong>Calculate how your money grows over time with compound interest and regular contributions.</strong></p>
-                <ul style="color: #4a5568; padding-left: 1.2rem; margin: 0;">
-                    <li>Initial investment & monthly contributions</li>
-                    <li>Flexible compounding frequencies</li>
-                    <li>Interactive growth visualization</li>
-                    <li>Total interest earned breakdown</li>
+        st.markdown("""
+        <div style="
+            background: var(--background-color, #ffffff);
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            border: 1px solid #e2e8f0;
+            height: 400px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        ">
+            <div>
+                <h3 style="color: var(--header-color, #666666); margin-bottom: 1rem; font-size: 1.25rem;">Compound Interest Calculator</h3>
+                <p style="color: #4a5568; margin-bottom: 1rem; font-size: 0.95rem;">See exactly how your money grows — and how to grow it faster.</p>
+                <ul style="color: #4a5568; padding-left: 1.2rem; margin: 0; font-size: 0.9rem; line-height: 1.6;">
+                    <li>Visualize growth from monthly contributions</li>
+                    <li>Test different compounding scenarios instantly</li>
+                    <li>Perfect for long-term savings or investing goals</li>
                 </ul>
             </div>
-            """, unsafe_allow_html=True)
-            
-            if st.button("Access Calculator", key="compound", use_container_width=True, type="primary"):
-                st.session_state.selected_page = "Compound Interest"
-                st.rerun()
+        </div>
+        """, unsafe_allow_html=True)
+        
+        if st.button("Launch Calculator", key="compound", use_container_width=True, type="primary"):
+            st.session_state.selected_page = "Compound Interest"
+            st.rerun()
     
     with col2:
         # Investment Fee Comparison Card
-        with st.container():
-            st.markdown("""
-            <div style="
-                background: white;
-                border-radius: 16px;
-                padding: 2rem;
-                box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-                border: 1px solid #e2e8f0;
-                height: 300px;
-                cursor: pointer;
-                transition: all 0.3s ease;
-            ">
-                <h3 style="color: #1a202c; margin-bottom: 1rem;">Investment Fee Comparison</h3>
-                <p style="color: #718096; margin-bottom: 1.5rem;"><strong>Compare the long-term impact of investment fees between self-managed and advisor-managed portfolios.</strong></p>
-                <ul style="color: #4a5568; padding-left: 1.2rem; margin: 0;">
-                    <li>Self-managed vs advisor comparison</li>
-                    <li>Fee impact visualization</li>
-                    <li>Total fees paid calculation</li>
-                    <li>Side-by-side results</li>
+        st.markdown("""
+        <div style="
+            background: var(--background-color, #ffffff);
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            border: 1px solid #e2e8f0;
+            height: 400px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        ">
+            <div>
+                <h3 style="color: var(--header-color, #666666); margin-bottom: 1rem; font-size: 1.25rem;">Investment Fee Comparison</h3>
+                <p style="color: #4a5568; margin-bottom: 1rem; font-size: 0.95rem;">Stop guessing what fees are costing you — start taking control.</p>
+                <ul style="color: #4a5568; padding-left: 1.2rem; margin: 0; font-size: 0.9rem; line-height: 1.6;">
+                    <li>Self-directed vs advisor fee impact</li>
+                    <li>Total fee cost over time</li>
+                    <li>Simple visuals to help you make smarter decisions today</li>
                 </ul>
             </div>
-            """, unsafe_allow_html=True)
-            
-            if st.button("Access Calculator", key="investment", use_container_width=True, type="primary"):
-                st.session_state.selected_page = "Investment Fees"
-                st.rerun()
+        </div>
+        """, unsafe_allow_html=True)
+        
+        if st.button("Launch Calculator", key="investment", use_container_width=True, type="primary"):
+            st.session_state.selected_page = "Investment Fees"
+            st.rerun()
     
     with col3:
         # Debt-Free Date Calculator Card
-        with st.container():
-            st.markdown("""
-            <div style="
-                background: white;
-                border-radius: 16px;
-                padding: 2rem;
-                box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-                border: 1px solid #e2e8f0;
-                height: 300px;
-                cursor: pointer;
-                transition: all 0.3s ease;
-            ">
-                <h3 style="color: #1a202c; margin-bottom: 1rem;">Debt-Free Date Calculator</h3>
-                <p style="color: #718096; margin-bottom: 1.5rem;"><strong>Plan your path to financial freedom by calculating when you'll be debt-free and how much you can save.</strong></p>
-                <ul style="color: #4a5568; padding-left: 1.2rem; margin: 0;">
-                    <li>Payoff timeline calculation</li>
-                    <li>Extra payment impact analysis</li>
-                    <li>Total interest savings</li>
-                    <li>Monthly payment breakdown</li>
+        st.markdown("""
+        <div style="
+            background: var(--background-color, #ffffff);
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            border: 1px solid #e2e8f0;
+            height: 400px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        ">
+            <div>
+                <h3 style="color: var(--header-color, #666666); margin-bottom: 1rem; font-size: 1.25rem;">Debt-Free Date Calculator</h3>
+                <p style="color: #4a5568; margin-bottom: 1rem; font-size: 0.95rem;">Know your timeline to freedom — and how to shorten it.</p>
+                <ul style="color: #4a5568; padding-left: 1.2rem; margin: 0; font-size: 0.9rem; line-height: 1.6;">
+                    <li>See your payoff schedule</li>
+                    <li>Test the impact of extra payments</li>
+                    <li>View your total interest savings instantly</li>
                 </ul>
             </div>
-            """, unsafe_allow_html=True)
-            
-            if st.button("Access Calculator", key="debt", use_container_width=True, type="primary"):
-                st.session_state.selected_page = "Debt Free Date"
-                st.rerun()
+        </div>
+        """, unsafe_allow_html=True)
+        
+        if st.button("Launch Calculator", key="debt", use_container_width=True, type="primary"):
+            st.session_state.selected_page = "Debt Free Date"
+            st.rerun()
+    
+    with col4:
+        # Biweekly Payment Calculator Card
+        st.markdown("""
+        <div style="
+            background: var(--background-color, #ffffff);
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            border: 1px solid #e2e8f0;
+            height: 400px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        ">
+            <div>
+                <h3 style="color: var(--header-color, #666666); margin-bottom: 1rem; font-size: 1.25rem;">Biweekly Payment Calculator</h3>
+                <p style="color: #4a5568; margin-bottom: 1rem; font-size: 0.95rem;">Convert monthly or annual payments into biweekly amounts that align with your pay schedule.</p>
+                <ul style="color: #4a5568; padding-left: 1.2rem; margin: 0; font-size: 0.9rem; line-height: 1.6;">
+                    <li>Monthly to biweekly conversion</li>
+                    <li>Annual to biweekly conversion</li>
+                    <li>26 pay periods per year calculation</li>
+                    <li>Automated transfer planning</li>
+                </ul>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        if st.button("Launch Calculator", key="biweekly", use_container_width=True, type="primary"):
+            st.session_state.selected_page = "Biweekly Payment"
+            st.rerun()
 
 def compound_interest_page():
     """Compound Interest Calculator"""
@@ -542,39 +816,33 @@ def compound_interest_page():
             years = st.number_input("Number of Years", min_value=1, max_value=50, value=20, step=1)
         
         with col3:
-            compound_frequency = st.selectbox(
-                "Compounding Frequency",
-                ["Annually", "Semi-annually", "Quarterly", "Monthly", "Daily"],
-                index=3
-            )
-            
-            frequency_map = {
-                "Annually": 1,
-                "Semi-annually": 2, 
-                "Quarterly": 4,
-                "Monthly": 12,
-                "Daily": 365
-            }
-            n = frequency_map[compound_frequency]
+            st.markdown("**Compounding:**")
+            st.info("Interest compounds annually")
+            n = 1  # Annual compounding
         
         # Form-style button positioning
         st.markdown("<br>", unsafe_allow_html=True)
         col1, col2, col3, col4 = st.columns([1, 1, 1, 1])
         with col4:
-            calculate_clicked = st.button("Calculate", type="primary", use_container_width=True)
+            calculate_clicked = st.button("Calculate", type="primary", use_container_width=True, key="compound_calc_button")
     
     # Results section
     if calculate_clicked:
-        # Calculate compound interest with regular contributions
+        # Calculate compound interest with regular contributions (annual compounding)
         r = annual_rate / 100
         
         # Future value of initial investment
-        future_value_initial = initial_amount * (1 + r/n)**(n*years)
+        future_value_initial = initial_amount * (1 + r)**years
         
-        # Future value of regular contributions (annuity)
+        # Future value of monthly contributions with annual compounding
         if monthly_contribution > 0:
-            monthly_rate = r / 12
-            future_value_contributions = monthly_contribution * (((1 + monthly_rate)**(12*years) - 1) / monthly_rate)
+            # Calculate each monthly contribution's future value individually
+            future_value_contributions = 0
+            for month in range(1, int(12*years) + 1):
+                # Years remaining for this contribution to compound
+                years_remaining = years - (month - 1) / 12
+                # Add the future value of this monthly contribution
+                future_value_contributions += monthly_contribution * (1 + r)**years_remaining
         else:
             future_value_contributions = 0
         
@@ -614,13 +882,15 @@ def compound_interest_page():
             years_elapsed = month / 12
             
             # Future value of initial investment at this point
-            fv_initial = initial_amount * (1 + r/n)**(n*years_elapsed)
+            fv_initial = initial_amount * (1 + r)**years_elapsed
             
-            # Future value of contributions made so far
+            # Future value of contributions made so far with annual compounding
             if month > 0 and monthly_contribution > 0:
-                months_contributing = month
-                monthly_rate = r / 12
-                fv_contributions = monthly_contribution * (((1 + monthly_rate)**months_contributing - 1) / monthly_rate)
+                fv_contributions = 0
+                for contrib_month in range(1, month + 1):
+                    # Years this contribution has been compounding
+                    years_compounding = years_elapsed - (contrib_month - 1) / 12
+                    fv_contributions += monthly_contribution * (1 + r)**years_compounding
             else:
                 fv_contributions = 0
             
@@ -700,7 +970,7 @@ def investment_fee_page():
             self_managed_fee = st.number_input("Self-Managed Fee (%)", min_value=0.0, max_value=5.0, value=0.15, step=0.01)
         
         with col2:
-            annual_contribution = st.number_input("Annual Contribution ($)", min_value=0.0, value=6000.0, step=500.0)
+            monthly_contribution = st.number_input("Monthly Contribution ($)", min_value=0.0, value=500.0, step=50.0)
             years = st.number_input("Investment Duration (Years)", min_value=1, max_value=50, value=25, step=1)
             advisor_fee = st.number_input("Advisor-Managed Fee (%)", min_value=0.0, max_value=5.0, value=1.25, step=0.01)
         
@@ -708,37 +978,51 @@ def investment_fee_page():
         st.markdown("<br>", unsafe_allow_html=True)
         col1, col2, col3, col4 = st.columns([1, 1, 1, 1])
         with col4:
-            calculate_clicked = st.button("Compare Scenarios", type="primary", use_container_width=True)
+            calculate_clicked = st.button("Compare Scenarios", type="primary", use_container_width=True, key="investment_calc_button")
     
     # Results section
     if calculate_clicked:
-        # Calculate both scenarios
+        # Calculate both scenarios using monthly compounding
         r_gross = expected_return / 100
-        r_self = r_gross - (self_managed_fee / 100)
-        r_advisor = r_gross - (advisor_fee / 100)
+        monthly_gross_rate = r_gross / 12
         
-        # Self-managed scenario
-        future_value_self_initial = starting_amount * (1 + r_self)**years
-        if annual_contribution > 0:
-            future_value_self_contributions = annual_contribution * (((1 + r_self)**years - 1) / r_self)
+        # Net monthly rates after fees
+        monthly_self_rate = monthly_gross_rate - (self_managed_fee / 100 / 12)
+        monthly_advisor_rate = monthly_gross_rate - (advisor_fee / 100 / 12)
+        
+        total_months = years * 12
+        
+        # Self-managed scenario with monthly compounding
+        future_value_self_initial = starting_amount * (1 + monthly_self_rate)**total_months
+        if monthly_contribution > 0:
+            future_value_self_contributions = monthly_contribution * (((1 + monthly_self_rate)**total_months - 1) / monthly_self_rate)
         else:
             future_value_self_contributions = 0
         total_self = future_value_self_initial + future_value_self_contributions
         
-        # Advisor-managed scenario  
-        future_value_advisor_initial = starting_amount * (1 + r_advisor)**years
-        if annual_contribution > 0:
-            future_value_advisor_contributions = annual_contribution * (((1 + r_advisor)**years - 1) / r_advisor)
+        # Advisor-managed scenario with monthly compounding
+        future_value_advisor_initial = starting_amount * (1 + monthly_advisor_rate)**total_months
+        if monthly_contribution > 0:
+            future_value_advisor_contributions = monthly_contribution * (((1 + monthly_advisor_rate)**total_months - 1) / monthly_advisor_rate)
         else:
             future_value_advisor_contributions = 0
         total_advisor = future_value_advisor_initial + future_value_advisor_contributions
         
         # Calculate total invested
-        total_invested = starting_amount + (annual_contribution * years)
+        total_invested = starting_amount + (monthly_contribution * total_months)
         
-        # Calculate fees paid
-        fees_self = total_invested * (self_managed_fee / 100) * years
-        fees_advisor = total_invested * (advisor_fee / 100) * years
+        # Calculate actual fees paid (difference between gross and net returns)
+        # Self-managed fees
+        gross_self_initial = starting_amount * (1 + monthly_gross_rate)**total_months
+        if monthly_contribution > 0:
+            gross_self_contributions = monthly_contribution * (((1 + monthly_gross_rate)**total_months - 1) / monthly_gross_rate)
+        else:
+            gross_self_contributions = 0
+        gross_self_total = gross_self_initial + gross_self_contributions
+        fees_self = gross_self_total - total_self
+        
+        # Advisor fees
+        fees_advisor = gross_self_total - total_advisor
         
         # Difference
         difference = total_self - total_advisor
@@ -771,18 +1055,20 @@ def investment_fee_page():
         advisor_values = []
         
         for year in years_array:
-            # Self-managed
-            fv_self_initial = starting_amount * (1 + r_self)**year
-            if annual_contribution > 0 and year > 0:
-                fv_self_contrib = annual_contribution * (((1 + r_self)**year - 1) / r_self)
+            months_elapsed = year * 12
+            
+            # Self-managed with monthly compounding
+            fv_self_initial = starting_amount * (1 + monthly_self_rate)**months_elapsed
+            if monthly_contribution > 0 and months_elapsed > 0:
+                fv_self_contrib = monthly_contribution * (((1 + monthly_self_rate)**months_elapsed - 1) / monthly_self_rate)
             else:
                 fv_self_contrib = 0
             self_values.append(fv_self_initial + fv_self_contrib)
             
-            # Advisor-managed
-            fv_advisor_initial = starting_amount * (1 + r_advisor)**year
-            if annual_contribution > 0 and year > 0:
-                fv_advisor_contrib = annual_contribution * (((1 + r_advisor)**year - 1) / r_advisor)
+            # Advisor-managed with monthly compounding
+            fv_advisor_initial = starting_amount * (1 + monthly_advisor_rate)**months_elapsed
+            if monthly_contribution > 0 and months_elapsed > 0:
+                fv_advisor_contrib = monthly_contribution * (((1 + monthly_advisor_rate)**months_elapsed - 1) / monthly_advisor_rate)
             else:
                 fv_advisor_contrib = 0
             advisor_values.append(fv_advisor_initial + fv_advisor_contrib)
@@ -853,7 +1139,7 @@ def debt_free_page():
         st.markdown("<br>", unsafe_allow_html=True)
         col1, col2, col3, col4 = st.columns([1, 1, 1, 1])
         with col4:
-            calculate_clicked = st.button("Calculate Payoff", type="primary", use_container_width=True)
+            calculate_clicked = st.button("Calculate Payoff", type="primary", use_container_width=True, key="debt_calc_button")
     
     # Results section
     if calculate_clicked:
@@ -889,15 +1175,15 @@ def debt_free_page():
         st.markdown(f"""
         <div class="results-grid">
             <div class="result-card">
-                <div class="result-value neutral">{int(months_standard)} months</div>
+                <div class="result-value neutral">{math.ceil(months_standard)} months</div>
                 <div class="result-label">Standard Payoff Time</div>
             </div>
             <div class="result-card">
-                <div class="result-value positive">{int(months_extra)} months</div>
+                <div class="result-value positive">{math.ceil(months_extra)} months</div>
                 <div class="result-label">With Extra Payments</div>
             </div>
             <div class="result-card">
-                <div class="result-value positive">{int(months_saved)} months</div>
+                <div class="result-value positive">{math.ceil(months_saved)} months</div>
                 <div class="result-label">Time Saved</div>
             </div>
             <div class="result-card">
@@ -930,7 +1216,7 @@ def debt_free_page():
             """, unsafe_allow_html=True)
         
         # Create payoff progression chart
-        months_to_show = int(max(months_standard, months_extra))
+        months_to_show = math.ceil(max(months_standard, months_extra))
         month_numbers = list(range(1, months_to_show + 1))
         
         # Calculate remaining balance for each scenario
@@ -993,17 +1279,169 @@ def debt_free_page():
         
         st.plotly_chart(fig, use_container_width=True)
 
+def biweekly_payment_page():
+    """Biweekly Payment Calculator"""
+    st.markdown("""
+    <div class="main-content">
+        <div class="page-header">
+            <h1>Biweekly Payment Calculator</h1>
+            <p>Convert monthly or annual payments into biweekly amounts that align with your pay schedule</p>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Input section in a clean container
+    with st.container():
+        st.markdown("### Payment Conversion")
+        st.markdown("---")
+        
+        # Information about the calculator
+        st.info("""
+        **How it works:** This calculator converts any monthly or annual payment, savings goal, or investment 
+        contribution into a biweekly amount. This allows you to set up automated transfers that align 
+        with a biweekly pay schedule (26 pay periods per year).
+        """)
+        
+        # Create organized input layout
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            st.markdown("**Choose your input type:**")
+            input_type = st.radio(
+                "Input Type Selection",
+                ["Monthly Amount", "Annual Amount"],
+                label_visibility="collapsed",
+                key="input_type_radio"
+            )
+        
+        with col2:
+            st.markdown("**Enter your amount:**")
+            if input_type == "Monthly Amount":
+                monthly_amount = st.number_input(
+                    "Monthly Amount ($)", 
+                    min_value=0.0, 
+                    value=0.0, 
+                    step=10.0,
+                    help="Enter the monthly payment amount you want to convert",
+                    key="monthly_input"
+                )
+                annual_amount = 0.0  # Reset annual when using monthly
+            else:
+                annual_amount = st.number_input(
+                    "Annual Amount ($)", 
+                    min_value=0.0, 
+                    value=0.0, 
+                    step=100.0,
+                    help="Enter the annual payment amount you want to convert",
+                    key="annual_input"
+                )
+                monthly_amount = 0.0  # Reset monthly when using annual
+        
+        # Form-style button positioning
+        st.markdown("<br>", unsafe_allow_html=True)
+        col1, col2, col3, col4 = st.columns([1, 1, 1, 1])
+        with col4:
+            calculate_clicked = st.button("Convert to Biweekly", type="primary", use_container_width=True, key="convert_button")
+    
+    # Results section
+    if calculate_clicked:
+        if monthly_amount > 0 or annual_amount > 0:
+            # Calculate biweekly amount
+            if input_type == "Monthly Amount" and monthly_amount > 0:
+                # Convert monthly to biweekly: monthly * 12 / 26
+                biweekly_amount = (monthly_amount * 12) / 26
+                original_amount = monthly_amount
+                original_type = "Monthly"
+                # Also calculate the annual equivalent
+                annual_equivalent = monthly_amount * 12
+            else:
+                # Convert annual to biweekly: annual / 26
+                biweekly_amount = annual_amount / 26
+                original_amount = annual_amount
+                original_type = "Annual"
+                # Also calculate the monthly equivalent
+                annual_equivalent = annual_amount
+            
+            # Display results
+            st.markdown(f"""
+            <div class="results-grid">
+                <div class="result-card">
+                    <div class="result-value positive">{format_currency(biweekly_amount)}</div>
+                    <div class="result-label">Biweekly Amount</div>
+                </div>
+                <div class="result-card">
+                    <div class="result-value neutral">{format_currency(original_amount)}</div>
+                    <div class="result-label">{original_type} Amount</div>
+                </div>
+                <div class="result-card">
+                    <div class="result-value neutral">{format_currency(annual_equivalent)}</div>
+                    <div class="result-label">Annual Equivalent</div>
+                </div>
+                <div class="result-card">
+                    <div class="result-value neutral">26</div>
+                    <div class="result-label">Pay Periods/Year</div>
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
+            
+            # Explanation section
+            col_a, col_b = st.columns(2)
+            with col_a:
+                st.markdown(f"""
+                <div class="content-section">
+                    <div class="section-title">How This Works</div>
+                    <p><strong>Biweekly Schedule:</strong> 26 pay periods per year (every 2 weeks)</p>
+                    <p><strong>Calculation:</strong> {original_type} amount {'÷ 26' if original_type == "Annual" else '× 12 ÷ 26'} = Biweekly amount</p>
+                    <p><strong>Total Annual:</strong> {format_currency(annual_equivalent)}</p>
+                </div>
+                """, unsafe_allow_html=True)
+            
+            with col_b:
+                st.markdown(f"""
+                <div class="content-section">
+                    <div class="section-title">Action Steps</div>
+                    <p><strong>Set up automated transfer:</strong> {format_currency(biweekly_amount)} every 2 weeks</p>
+                    <p><strong>Timing:</strong> Align with your payday schedule</p>
+                    <p><strong>Benefit:</strong> Smaller, more manageable amounts that build consistency</p>
+                    <p><strong>Result:</strong> Stress-free progress toward your financial goals</p>
+                </div>
+                """, unsafe_allow_html=True)
+            
+            # Additional tips
+            st.markdown("""
+            <div class="content-section">
+                <div class="section-title">Pro Tips</div>
+                <ul style="margin: 0; padding-left: 1.2rem;">
+                    <li><strong>Automation is key:</strong> Set up automatic transfers to remove the decision-making burden</li>
+                    <li><strong>Start small:</strong> Even small biweekly amounts add up significantly over time</li>
+                    <li><strong>Align with payday:</strong> Transfer money right after you get paid when funds are available</li>
+                    <li><strong>Multiple goals:</strong> Use this for savings, debt payments, investments, or any recurring financial goal</li>
+                    <li><strong>Momentum building:</strong> Biweekly payments create more frequent positive financial actions</li>
+                </ul>
+            </div>
+            """, unsafe_allow_html=True)
+            
+        else:
+            st.warning("Please enter either a monthly or annual amount to convert.")
+
 def main():
     """Main application"""
     # Initialize session state
     if "selected_page" not in st.session_state:
         st.session_state.selected_page = "Home"
+    if "last_sidebar_page" not in st.session_state:
+        st.session_state.last_sidebar_page = "Home"
     
     # Create sidebar and get selected page
-    selected_page = create_sidebar()
+    sidebar_page = create_sidebar()
     
-    # Update session state with sidebar selection
-    st.session_state.selected_page = selected_page
+    # Only update if sidebar actually changed
+    if sidebar_page != st.session_state.last_sidebar_page:
+        st.session_state.selected_page = sidebar_page
+        st.session_state.last_sidebar_page = sidebar_page
+    
+    # Use the session state page for routing
+    selected_page = st.session_state.selected_page
     
     # Route to appropriate page
     if selected_page == "Home":
@@ -1014,6 +1452,8 @@ def main():
         investment_fee_page()
     elif selected_page == "Debt Free Date":
         debt_free_page()
+    elif selected_page == "Biweekly Payment":
+        biweekly_payment_page()
 
 if __name__ == "__main__":
     main() 
