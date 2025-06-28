@@ -6,6 +6,7 @@ import numpy as np
 from datetime import datetime, timedelta
 import math
 import os
+import base64
 
 # Page Configuration
 st.set_page_config(
@@ -347,12 +348,28 @@ st.markdown("""
             0 1px 2px rgba(0, 0, 0, 0.1);
     }
     
-    /* Dashboard cards */
+    /* Responsive Dashboard Cards Grid */
     .dashboard-cards {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        grid-template-columns: repeat(4, 1fr);
         gap: 1.5rem;
         margin-bottom: 2rem;
+        width: 100%;
+    }
+    
+    /* Responsive breakpoints */
+    @media (max-width: 1400px) {
+        .dashboard-cards {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.25rem;
+        }
+    }
+    
+    @media (max-width: 768px) {
+        .dashboard-cards {
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
     }
     
     .calculator-card {
@@ -368,43 +385,79 @@ st.markdown("""
     }
     
     .calculator-card {
-        transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-        position: relative;
-        overflow: hidden;
+        background: var(--background-color, #ffffff);
+        border-radius: 16px;
+        padding: 1.5rem;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        border: 1px solid #e2e8f0;
+        color: inherit;
+        display: flex;
+        flex-direction: column;
+        height: 280px;
+        width: 100%;
     }
     
-    .calculator-card:before {
-        content: '';
-        position: absolute;
-        top: -2px;
-        left: -2px;
-        right: -2px;
-        bottom: -2px;
-        background: linear-gradient(135deg, #FF6600, #FF8533, #E55A00, #CC5200);
-        background-size: 400% 400%;
-        border-radius: 18px;
-        opacity: 0;
-        z-index: -1;
-        animation: cardGradientShift 10s ease-in-out infinite;
-        transition: opacity 0.5s ease;
+    .calculator-card-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
     }
     
-    .calculator-card:hover {
-        transform: translateY(-15px) scale(1.03);
-        box-shadow: 
-            0 30px 80px rgba(255, 102, 0, 0.3),
-            0 20px 40px rgba(0,0,0,0.15);
-        border-color: transparent;
+    .calculator-card-header {
+        color: var(--header-color, #666666);
+        font-size: 1.25rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        line-height: 1.3;
+        height: 4rem;
+        display: flex;
+        align-items: center;
     }
     
-    .calculator-card:hover:before {
-        opacity: 1;
+    .calculator-card-description {
+        color: #4a5568;
+        font-size: 0.95rem;
+        line-height: 1.5;
+        margin-bottom: 1.5rem;
+        flex: 1;
     }
     
-    @keyframes cardGradientShift {
-        0%, 100% { background-position: 0% 50%; }
-        50% { background-position: 100% 50%; }
+    @media (max-width: 768px) {
+        .calculator-card {
+            height: 200px;
+            padding: 1.25rem;
+        }
+        
+        .calculator-card-header {
+            font-size: 1.1rem;
+            height: 3rem;
+            margin-bottom: 0.75rem;
+        }
+        
+        .calculator-card-description {
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
     }
+    
+    @media (max-width: 480px) {
+        .calculator-card {
+            height: 180px;
+            padding: 1rem;
+        }
+        
+        .calculator-card-header {
+            font-size: 1rem;
+            height: 2.4rem;
+        }
+        
+        .calculator-card-description {
+            font-size: 0.85rem;
+        }
+    }
+    
+
     
     .card-icon {
         width: 64px;
@@ -614,29 +667,107 @@ st.markdown("""
         color: #663300 !important;
     }
     
-    /* Responsive design */
-    @media (max-width: 1200px) {
-        .dashboard-cards {
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1rem;
-        }
+    /* Mobile Header Bar */
+    .mobile-header-bar {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        background: #ffffff;
+        border-bottom: 1px solid #e2e8f0;
+        padding: 0.5rem 0.75rem;
+        z-index: 1000;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.5rem;
     }
     
+    .mobile-logo {
+        display: flex;
+        align-items: center;
+    }
+    
+    .mobile-logo-img {
+        height: 32px;
+        width: auto;
+    }
+    
+    .mobile-nav-dropdown-container {
+        position: relative;
+        width: 150px;
+        height: 40px;
+    }
+    
+    /* Enhanced Responsive design */
     @media (max-width: 768px) {
+        /* Hide desktop sidebar and header on mobile */
+        section[data-testid="stSidebar"] {
+            display: none !important;
+        }
+        
+        /* Hide Streamlit header elements on mobile */
+        header[data-testid="stHeader"] {
+            display: none !important;
+        }
+        
+        /* Hide sidebar toggle button/caret icon */
+        button[kind="header"],
+        button[data-testid="collapsedControl"],
+        [data-testid="collapsedControl"] {
+            display: none !important;
+        }
+        
+        /* Show mobile header bar */
+        .mobile-header-bar {
+            display: flex !important;
+        }
+        
+        /* Position the navigation selectbox in the header */
+        .mobile-header-bar + div {
+            position: fixed !important;
+            top: 0.5rem !important;
+            right: 0.75rem !important;
+            z-index: 1001 !important;
+            background: transparent !important;
+            width: 150px !important;
+        }
+        
+        .mobile-header-bar + div .stSelectbox {
+            margin: 0 !important;
+            width: 100% !important;
+        }
+        
+        .mobile-header-bar + div .stSelectbox > div {
+            margin: 0 !important;
+            width: 100% !important;
+        }
+        
+        .mobile-header-bar + div .stSelectbox select {
+            width: 100% !important;
+        }
+        
+        /* Adjust main content for mobile header */
+        .main {
+            padding-top: 60px !important;
+        }
+        
+        /* Remove top padding from Streamlit block container */
+        .block-container.st-emotion-cache-z5fcl4.ea3mdgi2 {
+            padding-top: 0 !important;
+        }
+        
         .main-content {
-            padding: 1rem;
+            padding: 0.5rem 1rem 1rem 1rem;
         }
         
-        .dashboard-cards {
-            grid-template-columns: 1fr;
-            gap: 1rem;
-        }
-        
-        .page-header {
+        .page-header, .page-header.home-header {
             padding: 2rem 1rem;
+            margin-bottom: 1.5rem;
         }
         
-        .page-header h1 {
+        .page-header h1, .page-header.home-header h1 {
             font-size: 2rem;
         }
         
@@ -644,9 +775,88 @@ st.markdown("""
             grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
             gap: 1rem;
         }
+        
+        /* Make Streamlit columns responsive on mobile */
+        .stColumns {
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 0.5rem !important;
+        }
+        
+        .stColumns > div {
+            width: 100% !important;
+            margin-bottom: 0.5rem !important;
+        }
+        
+        /* Style mobile navigation dropdown in header */
+        .mobile-header-bar + div .stSelectbox select {
+            background: #f8f9fa !important;
+            border: 2px solid #e2e8f0 !important;
+            border-radius: 8px !important;
+            padding: 0.5rem 0.75rem !important;
+            font-size: 0.9rem !important;
+            font-weight: 600 !important;
+            color: #333333 !important;
+            min-width: 140px !important;
+        }
+        
+        .mobile-header-bar + div .stSelectbox select:focus {
+            border-color: #FF6600 !important;
+            outline: none !important;
+            box-shadow: 0 0 0 3px rgba(255, 102, 0, 0.1) !important;
+        }
+        
+        /* Fix mobile touch targets */
+        button[data-testid="baseButton-primary"] {
+            padding: 1rem 1.5rem !important;
+            font-size: 1rem !important;
+        }
+    }
+    
+    /* Ensure mobile elements are completely hidden on desktop */
+    @media (min-width: 769px) {
+        .mobile-header-bar,
+        .mobile-header-bar *,
+        .mobile-header-bar + div,
+        .mobile-header-bar + div *,
+        .mobile-logo,
+        .mobile-logo-img,
+        .mobile-nav-dropdown-container {
+            display: none !important;
+            visibility: hidden !important;
+            opacity: 0 !important;
+            height: 0 !important;
+            width: 0 !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            position: absolute !important;
+            left: -9999px !important;
+        }
+        
+        /* Reset main padding on desktop */
+        .main {
+            padding-top: 0 !important;
+        }
+        
+        /* Reset block container padding on desktop */
+        .block-container.st-emotion-cache-z5fcl4.ea3mdgi2 {
+            padding-top: 1rem !important;
+        }
     }
     
     @media (max-width: 480px) {
+        .main-content {
+            padding: 0.75rem;
+        }
+        
+        .page-header, .page-header.home-header {
+            padding: 1.5rem 0.75rem;
+        }
+        
+        .page-header h1, .page-header.home-header h1 {
+            font-size: 1.75rem;
+        }
+        
         .results-grid {
             grid-template-columns: 1fr;
             gap: 1rem;
@@ -662,6 +872,15 @@ def format_currency(amount):
 def format_percentage(rate):
     """Format rate as percentage"""
     return f"{rate:.2f}%"
+
+def get_logo_base64():
+    """Convert logo to base64 for embedding in HTML"""
+    try:
+        with open("assets/logo.png", "rb") as f:
+            return base64.b64encode(f.read()).decode()
+    except FileNotFoundError:
+        # Return a simple emoji if logo file not found
+        return ""
 
 def create_sidebar():
     """Create the sidebar with logo and navigation"""
@@ -728,6 +947,7 @@ def create_sidebar():
 
 def home_page():
     """Home page with calculator cards"""
+    # Header
     st.markdown("""
     <div class="main-content">
         <div class="page-header home-header">
@@ -737,26 +957,15 @@ def home_page():
     </div>
     """, unsafe_allow_html=True)
     
-    # Create four columns for the calculator cards
+    # Create responsive columns that will automatically stack on mobile
     col1, col2, col3, col4 = st.columns(4, gap="medium")
     
     with col1:
-        # Compound Interest Calculator Card
         st.markdown("""
-        <div style="
-            background: var(--background-color, #ffffff);
-            border-radius: 16px;
-            padding: 1.5rem;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-            border: 1px solid #e2e8f0;
-            height: 350px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        ">
-            <div>
-                <h3 style="color: var(--header-color, #666666); margin-bottom: 1rem; font-size: 1.25rem;">Compound Interest Calculator</h3>
-                <p style="color: #4a5568; margin-bottom: 1rem; font-size: 0.95rem;">See exactly how your money grows — and how to grow it faster.</p>
+        <div class="calculator-card">
+            <div class="calculator-card-content">
+                <h3 class="calculator-card-header">Compound Interest Calculator</h3>
+                <p class="calculator-card-description">See exactly how your money grows — and how to grow it faster.</p>
             </div>
         </div>
         """, unsafe_allow_html=True)
@@ -766,22 +975,11 @@ def home_page():
             st.rerun()
     
     with col2:
-        # Investment Fee Comparison Card
         st.markdown("""
-        <div style="
-            background: var(--background-color, #ffffff);
-            border-radius: 16px;
-            padding: 1.5rem;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-            border: 1px solid #e2e8f0;
-            height: 350px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        ">
-            <div>
-                <h3 style="color: var(--header-color, #666666); margin-bottom: 1rem; font-size: 1.25rem;">Investment Fee Comparison</h3>
-                <p style="color: #4a5568; margin-bottom: 1rem; font-size: 0.95rem;">Stop guessing what fees are costing you — start taking control.</p>
+        <div class="calculator-card">
+            <div class="calculator-card-content">
+                <h3 class="calculator-card-header">Investment Fee Comparison</h3>
+                <p class="calculator-card-description">Stop guessing what fees are costing you — start taking control.</p>
             </div>
         </div>
         """, unsafe_allow_html=True)
@@ -791,22 +989,11 @@ def home_page():
             st.rerun()
     
     with col3:
-        # Debt-Free Date Calculator Card
         st.markdown("""
-        <div style="
-            background: var(--background-color, #ffffff);
-            border-radius: 16px;
-            padding: 1.5rem;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-            border: 1px solid #e2e8f0;
-            height: 350px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        ">
-            <div>
-                <h3 style="color: var(--header-color, #666666); margin-bottom: 1rem; font-size: 1.25rem;">Debt-Free Date Calculator</h3>
-                <p style="color: #4a5568; margin-bottom: 1rem; font-size: 0.95rem;">Know your timeline to freedom — and how to shorten it.</p>
+        <div class="calculator-card">
+            <div class="calculator-card-content">
+                <h3 class="calculator-card-header">Debt-Free Date Calculator</h3>
+                <p class="calculator-card-description">Know your timeline to freedom — and how to shorten it.</p>
             </div>
         </div>
         """, unsafe_allow_html=True)
@@ -816,22 +1003,11 @@ def home_page():
             st.rerun()
     
     with col4:
-        # Biweekly Payment Calculator Card
         st.markdown("""
-        <div style="
-            background: var(--background-color, #ffffff);
-            border-radius: 16px;
-            padding: 1.5rem;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-            border: 1px solid #e2e8f0;
-            height: 350px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        ">
-            <div>
-                <h3 style="color: var(--header-color, #666666); margin-bottom: 1rem; font-size: 1.25rem;">Biweekly Payment Calculator</h3>
-                <p style="color: #4a5568; margin-bottom: 1rem; font-size: 0.95rem;">Convert monthly or annual payments into biweekly amounts that align with your pay schedule.</p>
+        <div class="calculator-card">
+            <div class="calculator-card-content">
+                <h3 class="calculator-card-header">Biweekly Payment Calculator</h3>
+                <p class="calculator-card-description">Convert monthly or annual payments into biweekly amounts that align with your pay schedule.</p>
             </div>
         </div>
         """, unsafe_allow_html=True)
@@ -1034,47 +1210,46 @@ def investment_fee_page():
     
     # Results section
     if calculate_clicked:
-        # Calculate both scenarios using monthly compounding
-        r_gross = expected_return / 100
-        monthly_gross_rate = r_gross / 12
+        # Convert percentages to decimals
+        annual_return = expected_return / 100
+        fee_self = self_managed_fee / 100
+        fee_advisor = advisor_fee / 100
         
-        # Net monthly rates after fees
-        monthly_self_rate = monthly_gross_rate - (self_managed_fee / 100 / 12)
-        monthly_advisor_rate = monthly_gross_rate - (advisor_fee / 100 / 12)
+        # Calculate balance for self-managed scenario using year-by-year simulation
+        def calculate_balance(starting_amount, monthly_contribution, annual_return, annual_fee, years):
+            balance = starting_amount
+            
+            for year in range(1, years + 1):
+                # Add monthly contributions for the year (all at once at start of year)
+                balance += monthly_contribution * 12
+                
+                # Apply annual return
+                balance *= (1 + annual_return)
+                
+                # Deduct annual fee (as % of assets under management)
+                balance *= (1 - annual_fee)
+            
+            return balance
         
-        total_months = years * 12
-        
-        # Self-managed scenario with monthly compounding
-        future_value_self_initial = starting_amount * (1 + monthly_self_rate)**total_months
-        if monthly_contribution > 0:
-            future_value_self_contributions = monthly_contribution * (((1 + monthly_self_rate)**total_months - 1) / monthly_self_rate)
-        else:
-            future_value_self_contributions = 0
-        total_self = future_value_self_initial + future_value_self_contributions
-        
-        # Advisor-managed scenario with monthly compounding
-        future_value_advisor_initial = starting_amount * (1 + monthly_advisor_rate)**total_months
-        if monthly_contribution > 0:
-            future_value_advisor_contributions = monthly_contribution * (((1 + monthly_advisor_rate)**total_months - 1) / monthly_advisor_rate)
-        else:
-            future_value_advisor_contributions = 0
-        total_advisor = future_value_advisor_initial + future_value_advisor_contributions
+        # Calculate both scenarios
+        total_self = calculate_balance(starting_amount, monthly_contribution, annual_return, fee_self, years)
+        total_advisor = calculate_balance(starting_amount, monthly_contribution, annual_return, fee_advisor, years)
         
         # Calculate total invested
-        total_invested = starting_amount + (monthly_contribution * total_months)
+        total_invested = starting_amount + (monthly_contribution * 12 * years)
         
-        # Calculate actual fees paid (difference between gross and net returns)
-        # Self-managed fees
-        gross_self_initial = starting_amount * (1 + monthly_gross_rate)**total_months
-        if monthly_contribution > 0:
-            gross_self_contributions = monthly_contribution * (((1 + monthly_gross_rate)**total_months - 1) / monthly_gross_rate)
-        else:
-            gross_self_contributions = 0
-        gross_self_total = gross_self_initial + gross_self_contributions
-        fees_self = gross_self_total - total_self
+        # Calculate fee difference
+        fee_difference = total_self - total_advisor
         
-        # Advisor fees
-        fees_advisor = gross_self_total - total_advisor
+        # Calculate percentage difference
+        percentage_difference = (fee_difference / total_self * 100) if total_self > 0 else 0
+        
+        # For display: calculate what the balances would be without any fees for reference
+        total_no_fees = calculate_balance(starting_amount, monthly_contribution, annual_return, 0, years)
+        
+        # Calculate actual fees paid
+        fees_self_paid = total_no_fees - total_self
+        fees_advisor_paid = total_no_fees - total_advisor
         
         # Difference
         difference = total_self - total_advisor
@@ -1091,42 +1266,67 @@ def investment_fee_page():
                 <div class="result-label">Advisor-Managed Value</div>
             </div>
             <div class="result-card">
-                <div class="result-value positive">{format_currency(difference)}</div>
-                <div class="result-label">Difference</div>
+                <div class="result-value positive">{format_currency(fee_difference)}</div>
+                <div class="result-label">Fee Difference</div>
             </div>
             <div class="result-card">
-                <div class="result-value negative">{format_currency(fees_advisor - fees_self)}</div>
+                <div class="result-value negative">{format_currency(fees_advisor_paid - fees_self_paid)}</div>
                 <div class="result-label">Extra Fees Paid</div>
             </div>
         </div>
         """, unsafe_allow_html=True)
         
-        # Create comparison chart
+        # Additional breakdown
+        st.markdown(f"""
+        <div class="content-section">
+            <div class="section-title">Fee Impact Analysis</div>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                <div>
+                    <p><strong>Total Invested:</strong> {format_currency(total_invested)}</p>
+                    <p><strong>Without Fees:</strong> {format_currency(total_no_fees)}</p>
+                    <p><strong>Percentage Difference:</strong> {format_percentage(percentage_difference)}</p>
+                </div>
+                <div>
+                    <p><strong>Self-Managed Fees:</strong> {format_currency(fees_self_paid)}</p>
+                    <p><strong>Advisor Fees:</strong> {format_currency(fees_advisor_paid)}</p>
+                    <p><strong>Fee Rate Difference:</strong> {format_percentage((fee_advisor - fee_self) * 100)}</p>
+                </div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        # Create comparison chart using same simulation logic
         years_array = np.arange(0, years + 1)
         self_values = []
         advisor_values = []
+        no_fees_values = []
         
         for year in years_array:
-            months_elapsed = year * 12
-            
-            # Self-managed with monthly compounding
-            fv_self_initial = starting_amount * (1 + monthly_self_rate)**months_elapsed
-            if monthly_contribution > 0 and months_elapsed > 0:
-                fv_self_contrib = monthly_contribution * (((1 + monthly_self_rate)**months_elapsed - 1) / monthly_self_rate)
+            if year == 0:
+                # Starting values
+                self_values.append(starting_amount)
+                advisor_values.append(starting_amount)
+                no_fees_values.append(starting_amount)
             else:
-                fv_self_contrib = 0
-            self_values.append(fv_self_initial + fv_self_contrib)
-            
-            # Advisor-managed with monthly compounding
-            fv_advisor_initial = starting_amount * (1 + monthly_advisor_rate)**months_elapsed
-            if monthly_contribution > 0 and months_elapsed > 0:
-                fv_advisor_contrib = monthly_contribution * (((1 + monthly_advisor_rate)**months_elapsed - 1) / monthly_advisor_rate)
-            else:
-                fv_advisor_contrib = 0
-            advisor_values.append(fv_advisor_initial + fv_advisor_contrib)
+                # Use simulation for each year
+                self_balance = calculate_balance(starting_amount, monthly_contribution, annual_return, fee_self, year)
+                advisor_balance = calculate_balance(starting_amount, monthly_contribution, annual_return, fee_advisor, year)
+                no_fees_balance = calculate_balance(starting_amount, monthly_contribution, annual_return, 0, year)
+                
+                self_values.append(self_balance)
+                advisor_values.append(advisor_balance)
+                no_fees_values.append(no_fees_balance)
         
         # Create comparison chart
         fig = go.Figure()
+        
+        fig.add_trace(go.Scatter(
+            x=years_array,
+            y=no_fees_values,
+            mode='lines',
+            name='No Fees (Reference)',
+            line=dict(color='#3182ce', width=2, dash='dot')
+        ))
         
         fig.add_trace(go.Scatter(
             x=years_array,
@@ -1476,6 +1676,68 @@ def biweekly_payment_page():
         else:
             st.warning("Please enter either a monthly or annual amount to convert.")
 
+def create_mobile_header():
+    """Create mobile header navigation with logo and dropdown"""
+    # Add detection to only create on mobile
+    st.markdown("""
+    <script>
+    if (window.innerWidth > 768) {
+        // Hide mobile header completely on desktop
+        const mobileElements = document.querySelectorAll('.mobile-header-bar, .mobile-header-bar *, .mobile-logo, .mobile-nav-dropdown-container');
+        mobileElements.forEach(el => {
+            if (el) {
+                el.style.display = 'none';
+                el.style.visibility = 'hidden';
+                el.style.position = 'absolute';
+                el.style.left = '-9999px';
+            }
+        });
+    }
+    </script>
+    """, unsafe_allow_html=True)
+    
+    current_page = st.session_state.get("selected_page", "Home")
+    
+    # Create mobile header HTML with embedded navigation
+    pages = ["Home", "Compound Interest", "Investment Fees", "Debt Free Date", "Biweekly Payment"]
+    page_labels = ["Home", "Compound Interest", "Investment Fees", "Debt Free Date", "Biweekly Payment"]
+    current_index = pages.index(current_page)
+    
+    # Create the mobile header HTML with logo
+    logo_base64 = get_logo_base64()
+    if logo_base64:
+        logo_html = f'<img src="data:image/png;base64,{logo_base64}" alt="Logo" class="mobile-logo-img">'
+    else:
+        logo_html = '<span style="font-size: 1.2rem; color: #666666; font-weight: 700;">💰 FET</span>'
+    
+    st.markdown(f"""
+    <div class="mobile-header-bar">
+        <div class="mobile-logo">
+            {logo_html}
+        </div>
+        <div class="mobile-nav-dropdown-container">
+            <!-- Navigation dropdown will be positioned here -->
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+    
+
+    
+    # Create the navigation dropdown
+    selected = st.selectbox(
+        "Navigate",
+        options=pages,
+        format_func=lambda x: page_labels[pages.index(x)],
+        index=current_index,
+        key="mobile_header_nav",
+        label_visibility="collapsed"
+    )
+    
+    # Handle navigation change
+    if selected != current_page:
+        st.session_state.selected_page = selected
+        st.rerun()
+
 def main():
     """Main application"""
     # Initialize session state
@@ -1484,7 +1746,9 @@ def main():
     if "last_sidebar_page" not in st.session_state:
         st.session_state.last_sidebar_page = "Home"
     
-    # Create sidebar and get selected page
+
+    
+    # Create sidebar and get selected page (desktop only)
     sidebar_page = create_sidebar()
     
     # Only update if sidebar actually changed
@@ -1492,8 +1756,14 @@ def main():
         st.session_state.selected_page = sidebar_page
         st.session_state.last_sidebar_page = sidebar_page
     
+    # Handle mobile navigation via URL hash (if available)
+    # This would need JavaScript integration for full functionality
+    
     # Use the session state page for routing
     selected_page = st.session_state.selected_page
+    
+    # Add mobile header navigation (only shows on mobile)
+    create_mobile_header()
     
     # Route to appropriate page
     if selected_page == "Home":
