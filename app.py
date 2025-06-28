@@ -254,6 +254,63 @@ st.markdown("""
         100% { left: 100%; }
     }
     
+    /* Creative Grey Header for Home Page */
+    .page-header.home-header {
+        background: 
+            linear-gradient(135deg, #2d3748 0%, #4a5568 25%, #666666 50%, #718096 75%, #a0aec0 100%),
+            linear-gradient(45deg, transparent 25%, rgba(255,255,255,0.03) 25%, rgba(255,255,255,0.03) 50%, transparent 50%, transparent 75%, rgba(255,255,255,0.03) 75%);
+        background-size: 400% 400%, 60px 60px;
+        animation: greyGradientShift 12s ease-in-out infinite, patternSlide 20s linear infinite;
+        box-shadow: 
+            0 25px 80px rgba(45, 55, 72, 0.4),
+            0 15px 40px rgba(45, 55, 72, 0.3),
+            inset 0 1px 0 rgba(255, 255, 255, 0.1),
+            inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .page-header.home-header::before {
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+        animation: shimmerGrey 4s ease-in-out infinite;
+    }
+    
+    .page-header.home-header::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: 
+            radial-gradient(circle at 20% 20%, rgba(255,255,255,0.1) 0%, transparent 50%),
+            radial-gradient(circle at 80% 80%, rgba(255,255,255,0.08) 0%, transparent 50%),
+            radial-gradient(circle at 40% 70%, rgba(255,255,255,0.05) 0%, transparent 50%);
+        pointer-events: none;
+        animation: orbs 15s ease-in-out infinite;
+    }
+    
+    @keyframes greyGradientShift {
+        0%, 100% { background-position: 0% 50%, 0 0; }
+        33% { background-position: 100% 50%, 20px 20px; }
+        66% { background-position: 0% 100%, 40px 40px; }
+    }
+    
+    @keyframes patternSlide {
+        0% { background-position: 0% 50%, 0 0; }
+        100% { background-position: 400% 50%, 60px 60px; }
+    }
+    
+    @keyframes shimmerGrey {
+        0% { left: -100%; }
+        100% { left: 100%; }
+    }
+    
+    @keyframes orbs {
+        0%, 100% { opacity: 1; transform: scale(1); }
+        50% { opacity: 0.7; transform: scale(1.1); }
+    }
+    
     .page-header h1 {
         font-size: 2.75rem;
         font-weight: 800;
@@ -272,6 +329,22 @@ st.markdown("""
         text-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
         position: relative;
         z-index: 1;
+    }
+    
+    /* Enhanced text styling for grey header */
+    .page-header.home-header h1 {
+        color: white !important;
+        text-shadow: 
+            0 3px 10px rgba(0, 0, 0, 0.4),
+            0 1px 3px rgba(0, 0, 0, 0.2);
+        font-weight: 900;
+    }
+    
+    .page-header.home-header p {
+        color: rgba(255, 255, 255, 0.95) !important;
+        text-shadow: 
+            0 2px 6px rgba(0, 0, 0, 0.3),
+            0 1px 2px rgba(0, 0, 0, 0.1);
     }
     
     /* Dashboard cards */
@@ -657,7 +730,7 @@ def home_page():
     """Home page with calculator cards"""
     st.markdown("""
     <div class="main-content">
-        <div class="page-header">
+        <div class="page-header home-header">
             <h1>The Financial Evolution Toolkit</h1>
             <p>Unlock financial clarity in minutes — not months.<br>These calculators give you the answers most people pay advisors to figure out.</p>
         </div>
@@ -676,7 +749,7 @@ def home_page():
             padding: 1.5rem;
             box-shadow: 0 4px 12px rgba(0,0,0,0.08);
             border: 1px solid #e2e8f0;
-            height: 400px;
+            height: 350px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -684,11 +757,6 @@ def home_page():
             <div>
                 <h3 style="color: var(--header-color, #666666); margin-bottom: 1rem; font-size: 1.25rem;">Compound Interest Calculator</h3>
                 <p style="color: #4a5568; margin-bottom: 1rem; font-size: 0.95rem;">See exactly how your money grows — and how to grow it faster.</p>
-                <ul style="color: #4a5568; padding-left: 1.2rem; margin: 0; font-size: 0.9rem; line-height: 1.6;">
-                    <li>Visualize growth from monthly contributions</li>
-                    <li>Test different compounding scenarios instantly</li>
-                    <li>Perfect for long-term savings or investing goals</li>
-                </ul>
             </div>
         </div>
         """, unsafe_allow_html=True)
@@ -706,7 +774,7 @@ def home_page():
             padding: 1.5rem;
             box-shadow: 0 4px 12px rgba(0,0,0,0.08);
             border: 1px solid #e2e8f0;
-            height: 400px;
+            height: 350px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -714,11 +782,6 @@ def home_page():
             <div>
                 <h3 style="color: var(--header-color, #666666); margin-bottom: 1rem; font-size: 1.25rem;">Investment Fee Comparison</h3>
                 <p style="color: #4a5568; margin-bottom: 1rem; font-size: 0.95rem;">Stop guessing what fees are costing you — start taking control.</p>
-                <ul style="color: #4a5568; padding-left: 1.2rem; margin: 0; font-size: 0.9rem; line-height: 1.6;">
-                    <li>Self-directed vs advisor fee impact</li>
-                    <li>Total fee cost over time</li>
-                    <li>Simple visuals to help you make smarter decisions today</li>
-                </ul>
             </div>
         </div>
         """, unsafe_allow_html=True)
@@ -736,7 +799,7 @@ def home_page():
             padding: 1.5rem;
             box-shadow: 0 4px 12px rgba(0,0,0,0.08);
             border: 1px solid #e2e8f0;
-            height: 400px;
+            height: 350px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -744,11 +807,6 @@ def home_page():
             <div>
                 <h3 style="color: var(--header-color, #666666); margin-bottom: 1rem; font-size: 1.25rem;">Debt-Free Date Calculator</h3>
                 <p style="color: #4a5568; margin-bottom: 1rem; font-size: 0.95rem;">Know your timeline to freedom — and how to shorten it.</p>
-                <ul style="color: #4a5568; padding-left: 1.2rem; margin: 0; font-size: 0.9rem; line-height: 1.6;">
-                    <li>See your payoff schedule</li>
-                    <li>Test the impact of extra payments</li>
-                    <li>View your total interest savings instantly</li>
-                </ul>
             </div>
         </div>
         """, unsafe_allow_html=True)
@@ -766,7 +824,7 @@ def home_page():
             padding: 1.5rem;
             box-shadow: 0 4px 12px rgba(0,0,0,0.08);
             border: 1px solid #e2e8f0;
-            height: 400px;
+            height: 350px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -774,12 +832,6 @@ def home_page():
             <div>
                 <h3 style="color: var(--header-color, #666666); margin-bottom: 1rem; font-size: 1.25rem;">Biweekly Payment Calculator</h3>
                 <p style="color: #4a5568; margin-bottom: 1rem; font-size: 0.95rem;">Convert monthly or annual payments into biweekly amounts that align with your pay schedule.</p>
-                <ul style="color: #4a5568; padding-left: 1.2rem; margin: 0; font-size: 0.9rem; line-height: 1.6;">
-                    <li>Monthly to biweekly conversion</li>
-                    <li>Annual to biweekly conversion</li>
-                    <li>26 pay periods per year calculation</li>
-                    <li>Automated transfer planning</li>
-                </ul>
             </div>
         </div>
         """, unsafe_allow_html=True)
@@ -1132,7 +1184,7 @@ def debt_free_page():
             annual_rate = st.number_input("Annual Interest Rate (%)", min_value=0.0, max_value=30.0, value=18.0, step=0.1)
         
         with col2:
-            monthly_payment = st.number_input("Monthly Payment ($)", min_value=0.0, value=500.0, step=25.0)
+            monthly_payment = st.number_input("Miminum Monthly Payment ($)", min_value=0.0, value=500.0, step=25.0)
             extra_payment = st.number_input("Extra Monthly Payment ($)", min_value=0.0, value=100.0, step=25.0)
         
         # Form-style button positioning
